@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <!-- Định nghĩa style cho Button -->
+        <style name="MyButtonStyle">
+            <item name="android:backgroundTint">@color/orange</item>
+            <item name="android:padding">10dp</item>
+        </style>
+</resources>
