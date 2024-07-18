@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
@@ -11,28 +11,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
-        tools:targetApi="31" >
+        tools:targetApi="31">
+        <activity
+            android:name=".View.HomePage_Activity"
+            android:exported="false" />
         <activity
             android:name=".food_item"
             android:exported="false" />
         <activity
-            android:name=".Login_Activity"
+            android:name=".View.Login_Activity"
             android:exported="false" />
         <activity
-            android:name=".Address_Activity"
+            android:name=".View.Address_Activity"
             android:exported="false" />
         <activity
-            android:name=".Singup_Activity"
+            android:name=".View.Singup_Activity"
             android:exported="false" />
         <activity
-            android:name=".Home_Activity"
+            android:name=".View.Home_Activity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".View.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpComplete_Activity"
-            android:exported="true" >
+            android:name=".View.SignUpComplete_Activity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
