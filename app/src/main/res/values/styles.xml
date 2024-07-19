@@ -1,8 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-        <!-- Định nghĩa style cho Button -->
-        <style name="MyButtonStyle">
-            <item name="android:backgroundTint">@color/orange</item>
-            <item name="android:padding">10dp</item>
+    <style name="RoundImage" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="shapeAppearance">@style/RoundImageAppearance</item>
+    </style>
+
+    <style name="RoundImageAppearance" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+        <style name="roundedCorners">
+            <item name="cornerFamily">rounded</item>
+            <item name="cornerSizeTopLeft">16dp</item>
+            <item name="cornerSizeTopRight">16dp</item>
+            <item name="cornerSizeBottomLeft">0dp</item>
+            <item name="cornerSizeBottomRight">0dp</item>
         </style>
+
 </resources>

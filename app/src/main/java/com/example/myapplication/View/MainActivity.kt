@@ -1,21 +1,26 @@
 package com.example.myapplication.View
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.myapplication.R
+import androidx.lifecycle.ViewModelProvider
+import com.example.myapplication.View.Fragment.FoodViewModel
+import com.example.myapplication.View.Fragment.NewsViewModelProviderFactory
+import com.example.myapplication.databinding.ActivityMainBinding
+import com.example.myapplication.repository.NewsRemoteRepository
 
 class MainActivity : AppCompatActivity() {
+    lateinit var foodViewModel: FoodViewModel
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val newsRemoteRepository = NewsRemoteRepository()
+        val viewModelProviderFactory =
+            NewsViewModelProviderFactory(application, newsRemoteRepository)
+
+        foodViewModel = ViewModelProvider(this, viewModelProviderFactory)[FoodViewModel::class.java]
+
         }
     }
-}

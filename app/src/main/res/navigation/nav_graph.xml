@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/addressFragment"
+        android:name="com.example.myapplication.View.Fragment.AddressFragment"
+        android:label="AddressFragment" >
+        <action
+            android:id="@+id/action_addressFragment_to_singUpSuccessFragment"
+            app:destination="@id/singUpSuccessFragment" />
+        <action
+            android:id="@+id/action_addressFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.myapplication.View.Fragment.HomeFragment"
+        android:label="HomeFragment" />
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.myapplication.View.Fragment.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.myapplication.View.Fragment.SignUpFragment"
+        android:label="SignUpFragment" >
+        <action
+            android:id="@+id/action_signUpFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment2"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/singUpSuccessFragment"
+        android:name="com.example.myapplication.View.Fragment.SingUpSuccessFragment"
+        android:label="SingUpSuccessFragment" >
+        <action
+            android:id="@+id/action_singUpSuccessFragment_to_homeFragment2"
+            app:destination="@id/homeFragment" />
+    </fragment>
+</navigation>

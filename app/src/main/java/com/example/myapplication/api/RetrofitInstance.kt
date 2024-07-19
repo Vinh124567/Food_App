@@ -15,7 +15,7 @@ class RetrofitInstance {
                 .build()
 
             Retrofit.Builder()
-                .baseUrl("https://newsapi.org/")
+                .baseUrl("http://10.0.2.2:8081")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
