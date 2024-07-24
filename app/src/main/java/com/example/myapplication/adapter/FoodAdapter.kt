@@ -48,7 +48,9 @@ class FoodAdapter : RecyclerView.Adapter<FoodAdapter.FoodViewHolder>() {
         holder.name.text = food.name
 
         holder.itemView.setOnClickListener {
-            onItemClickListener?.let { it(food) }
+            onItemClickListener?.let {
+                it(food)
+            }
         }
     }
 

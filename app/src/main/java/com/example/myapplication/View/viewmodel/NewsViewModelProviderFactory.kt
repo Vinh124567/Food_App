@@ -1,4 +1,4 @@
-package com.example.myapplication.View.Fragment
+package com.example.myapplication.View.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

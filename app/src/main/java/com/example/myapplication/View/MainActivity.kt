@@ -3,8 +3,8 @@ package com.example.myapplication.View
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.View.Fragment.FoodViewModel
-import com.example.myapplication.View.Fragment.NewsViewModelProviderFactory
+import com.example.myapplication.View.viewmodel.FoodViewModel
+import com.example.myapplication.View.viewmodel.NewsViewModelProviderFactory
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.repository.NewsRemoteRepository
 

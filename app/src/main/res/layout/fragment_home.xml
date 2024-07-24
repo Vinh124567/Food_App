@@ -9,6 +9,7 @@
    >
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -19,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="70dp">
+            android:layout_marginBottom="20dp">
 
             <TextView
                 android:id="@+id/textlogin"
@@ -51,7 +52,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
-
                 android:id="@+id/recyclerHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,5 +62,45 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabIndicatorAnimationMode="elastic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:tabIndicatorColor="@color/black"
+        app:tabSelectedTextColor="@color/black"
+        app:tabRippleColor="@null"
+        app:tabTextColor="@color/silver"
+        app:tabBackground="@drawable/tablayout_nofocus"
+        app:tabMaxWidth="400dp"
+        app:tabIndicator="@drawable/tablayout_nofocus"
+        >
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Taste" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Popular" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recommended" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_below="@+id/tab_layout"
+        app:layout_constraintTop_toBottomOf="@+id/tab_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
