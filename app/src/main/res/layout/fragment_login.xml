@@ -5,8 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".View.Fragment.Login_Activity">
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
@@ -49,12 +48,12 @@
             android:text="Email Address"
             android:textSize="20dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/editText"
-            app:layout_constraintStart_toStartOf="@+id/editText"
+            app:layout_constraintBottom_toTopOf="@+id/edtEmail"
+            app:layout_constraintStart_toStartOf="@+id/edtEmail"
             tools:ignore="MissingConstraints" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/edtEmail"
             android:layout_width="400dp"
             android:layout_height="48dp"
             android:layout_marginStart="46dp"
@@ -78,12 +77,12 @@
             android:text="Password"
             android:textSize="20dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/editText1"
-            app:layout_constraintStart_toStartOf="@+id/editText1"
+            app:layout_constraintBottom_toTopOf="@+id/edtPassword"
+            app:layout_constraintStart_toStartOf="@+id/edtPassword"
             tools:ignore="MissingConstraints" />
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/edtPassword"
             android:layout_width="400dp"
             android:layout_height="48dp"
             android:layout_marginStart="46dp"
@@ -95,22 +94,23 @@
             android:textColorHint="@color/silver"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText"
+            app:layout_constraintTop_toBottomOf="@+id/edtEmail"
             tools:ignore="MissingConstraints" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnSingIn"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="46dp"
             android:layout_marginTop="24dp"
+            android:inputType="text|textEmailAddress"
             android:layout_marginEnd="46dp"
             android:background="@drawable/button_login"
             android:text="Sing In"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText1" />
+            app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
 
         <TextView
             android:id="@+id/textView3"
@@ -124,7 +124,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button"
+            app:layout_constraintTop_toBottomOf="@+id/btnSingIn"
             app:layout_constraintVertical_bias="0.232"
             tools:ignore="MissingConstraints" />
 
@@ -151,6 +151,7 @@
             android:background="@drawable/button_google_fb"
             android:drawableLeft="@drawable/facebook"
             android:paddingLeft="10dp"
+            android:inputType="text|textEmailAddress"
             android:text="Facebook"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -161,6 +162,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="50dp"
+            android:inputType="text|textEmailAddress"
             android:background="@drawable/button_google_fb"
             android:drawableLeft="@drawable/google"
             android:paddingLeft="10dp"
@@ -179,6 +181,7 @@
             app:layout_constraintTop_toBottomOf="@+id/button2" />
 
         <TextView
+            android:id="@+id/txtSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

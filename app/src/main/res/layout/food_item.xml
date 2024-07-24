@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="230dp"
-    android:layout_height="240dp"
-    android:layout_margin="8dp"
+    android:layout_width="210dp"
+    android:layout_height="220dp"
+    android:layout_marginLeft="20dp"
     android:background="@drawable/grey_bg">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -16,6 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@null"
         app:shapeAppearanceOverlay="@style/roundedCorners" />
 
     <TextView

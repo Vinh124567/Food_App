@@ -1,10 +1,11 @@
-package com.example.myapplication.View.Fragment
+package com.example.myapplication.View.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.model.Food
+import com.example.myapplication.model.User
 import com.example.myapplication.repository.NewsRemoteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,14 +15,13 @@ class FoodViewModel(app: Application, private val newsRemoteRepository: NewsRemo
 
     val foodLiveData = MutableLiveData<List<Food>>()
     val errorLiveData = MutableLiveData<String>()
-
+    val _loginResult = MutableLiveData<User>()
     fun fetchAllFood() {
         viewModelScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
                     newsRemoteRepository.getAllFood()
                 }
-
                 if (response.isSuccessful) {
                     foodLiveData.value = response.body() ?: emptyList()
                 } else {
@@ -33,4 +33,24 @@ class FoodViewModel(app: Application, private val newsRemoteRepository: NewsRemo
             }
         }
     }
+
+    fun requestLogin(email: String, password: String) {
+        viewModelScope.launch {
+            try {
+                val response = newsRemoteRepository.login(email, password)
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        _loginResult.value = it
+                    } ?: run {
+                        errorLiveData.value = "Login failed: Response body is null"
+                    }
+                } else {
+                    errorLiveData.value = response.errorBody()?.string() ?: "Unknown error"
+                }
+            } catch (e: Exception) {
+                errorLiveData.value = "Exception: ${e.message}"
+            }
+        }
+    }
+    
 }
