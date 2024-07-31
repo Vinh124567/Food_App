@@ -14,4 +14,7 @@ interface FoodAPI {
 
     @POST("userinfor/login")
     suspend fun login(@Body loginRequest: LoginRequest): Response<User>
+
+    @GET("foodname/newfood")
+    suspend fun getNewFood(): Response<List<Food>>
 }

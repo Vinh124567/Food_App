@@ -1,47 +1,41 @@
 package com.example.myapplication.View.Fragment
-
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-
-class NewTasteFragment : Fragment() {
+import com.example.myapplication.View.MainActivity
+import com.example.myapplication.View.viewmodel.FoodViewModel
+import com.example.myapplication.adapter.PopularAdapter
+import com.example.myapplication.databinding.FragmentPopularBinding
 
 
+class NewTasteFragment : Fragment(R.layout.fragment_new_taste) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_taste, container, false)
+    private lateinit var popularAdapter: PopularAdapter
+    private lateinit var foodViewModel: FoodViewModel
+    private var _binding: FragmentPopularBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentPopularBinding.bind(view)
+        foodViewModel = (activity as MainActivity).foodViewModel
+        setupHomeRecycler()
+        foodViewModel.newFoodLiveData.observe(viewLifecycleOwner, Observer { foodList ->
+            popularAdapter.differ.submitList(foodList)
+        })
+
+        foodViewModel.fetchNewFood()
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment NewTasteFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            NewTasteFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun setupHomeRecycler() {
+        popularAdapter = PopularAdapter()
+        binding.recyclerViewPopular.apply {
+            adapter = popularAdapter
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        }
     }
+
 }

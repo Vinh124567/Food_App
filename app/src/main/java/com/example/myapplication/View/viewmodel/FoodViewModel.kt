@@ -14,8 +14,10 @@ import kotlinx.coroutines.withContext
 class FoodViewModel(app: Application, private val newsRemoteRepository: NewsRemoteRepository) : AndroidViewModel(app) {
 
     val foodLiveData = MutableLiveData<List<Food>>()
+    val newFoodLiveData = MutableLiveData<List<Food>>()
     val errorLiveData = MutableLiveData<String>()
     val _loginResult = MutableLiveData<User>()
+
     fun fetchAllFood() {
         viewModelScope.launch {
             try {
@@ -24,6 +26,24 @@ class FoodViewModel(app: Application, private val newsRemoteRepository: NewsRemo
                 }
                 if (response.isSuccessful) {
                     foodLiveData.value = response.body() ?: emptyList()
+                } else {
+                    errorLiveData.value = "Error: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                errorLiveData.value = "Exception: ${e.message}"
+            }
+        }
+    }
+
+    fun fetchNewFood() {
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    newsRemoteRepository.getNewFood()
+                }
+                if (response.isSuccessful) {
+                    newFoodLiveData.value = response.body() ?: emptyList()
                 } else {
                     errorLiveData.value = "Error: ${response.code()}"
                 }

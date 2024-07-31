@@ -17,4 +17,6 @@ class NewsRemoteRepository {
         val loginRequest = LoginRequest(email, password)
         return RetrofitInstance.api.login(loginRequest)
     }
+
+    suspend fun getNewFood()=RetrofitInstance.api.getNewFood()
 }
