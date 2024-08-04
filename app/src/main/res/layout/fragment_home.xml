@@ -79,6 +79,7 @@
         app:tabBackground="@drawable/tablayout_nofocus"
         app:tabMaxWidth="400dp"
         app:tabIndicator="@drawable/tablayout_nofocus"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
         >
 
         <com.google.android.material.tabs.TabItem

@@ -69,5 +69,23 @@
         <argument
             android:name="food"
             app:argType="com.example.myapplication.model.Food"/>
+        <action
+            android:id="@+id/action_foodDetailFragment2_to_paymentFragment"
+            app:destination="@id/paymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.example.myapplication.View.Fragment.PaymentFragment"
+        android:label="fragment_payment"
+        tools:layout="@layout/fragment_payment" >
+        <argument
+            android:name="food"
+            app:argType="com.example.myapplication.model.Food"/>
+        <argument
+            android:name="count"
+            app:argType="integer"/>
+        <action
+            android:id="@+id/action_paymentFragment_to_foodDetailFragment2"
+            app:destination="@id/foodDetailFragment2" />
     </fragment>
 </navigation>
