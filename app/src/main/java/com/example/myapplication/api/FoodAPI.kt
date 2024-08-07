@@ -1,7 +1,9 @@
 package com.example.myapplication.api
 
 import com.example.myapplication.model.Food
+import com.example.myapplication.model.FoodReponse
 import com.example.myapplication.model.LoginRequest
+import com.example.myapplication.model.Order
 import com.example.myapplication.model.User
 import retrofit2.Response
 import retrofit2.http.Body
@@ -17,4 +19,7 @@ interface FoodAPI {
 
     @GET("foodname/newfood")
     suspend fun getNewFood(): Response<List<Food>>
+
+    @POST("order/neworder")
+    suspend fun newOrder(@Body order:Order):Response<FoodReponse<Order>>
 }

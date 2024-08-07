@@ -47,7 +47,7 @@ class PopularAdapter: RecyclerView.Adapter<PopularAdapter.FoodViewHolder>() {
                 .into(holder.image)
 
             holder.name.text = food.name
-            holder.id.text = food.id
+            holder.id.text = food.id.toString()
 
             holder.itemView.setOnClickListener {
                 onItemClickListener?.let { it(food) }

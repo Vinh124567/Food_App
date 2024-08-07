@@ -15,7 +15,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         lifecycleScope.launch {
-            delay(3000)
+            delay(1000)
             navigateToNewsActivity()
         }
     }

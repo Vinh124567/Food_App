@@ -87,5 +87,17 @@
         <action
             android:id="@+id/action_paymentFragment_to_foodDetailFragment2"
             app:destination="@id/foodDetailFragment2" />
+        <action
+            android:id="@+id/action_paymentFragment_to_yourOrdersFragment"
+            app:destination="@id/yourOrdersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/yourOrdersFragment"
+        android:name="com.example.myapplication.View.Fragment.YourOrdersFragment"
+        android:label="fragment_your_orders"
+        tools:layout="@layout/fragment_your_orders" >
+        <action
+            android:id="@+id/action_yourOrdersFragment_to_paymentFragment"
+            app:destination="@id/paymentFragment" />
     </fragment>
 </navigation>

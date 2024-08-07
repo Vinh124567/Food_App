@@ -17,47 +17,57 @@ class FoodDetailFragment : Fragment(R.layout.fragment_food_detail) {
     private val args: FoodDetailFragmentArgs by navArgs()
     private lateinit var binding: FragmentFoodDetailBinding
     private lateinit var foodViewModel: FoodViewModel
-    var count:Int = 0
+    var count: Int = 0
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         foodViewModel = (activity as MainActivity).foodViewModel
         binding = FragmentFoodDetailBinding.bind(view)
-        var food = args.food
-        setContent(food)
-        if (count==0) {
-            binding.txtPrice.text = "0"
+
+        foodViewModel.food.observe(viewLifecycleOwner) { food ->
+            if (food != null) {
+                setContent(food)
+            }
+        }
+
+        foodViewModel.count.observe(viewLifecycleOwner) { count ->
+            binding.textView11.text = count.toString()
+        }
+
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         binding.imgAdd.setOnClickListener {
-            count++
-            binding.textView11.text = count.toString()
-            updatePrice(food.price)
-
+            val newCount = (foodViewModel.count.value ?: 0) + 1
+            foodViewModel.setCount(newCount)
         }
+
         binding.imgReduce.setOnClickListener {
-            if (count==0){
-                binding.txtPrice.text="0"
-            }else {
-                count--
-                binding.textView11.text = count.toString()
-                updatePrice(food.price)
+            val currentCount = foodViewModel.count.value ?: 0
+            if (currentCount > 0) {
+                val newCount = currentCount - 1
+                foodViewModel.setCount(newCount)
             }
-
         }
+
         binding.btnOrder.setOnClickListener {
             val bundle = Bundle().apply {
-                putSerializable("food", food)
-                putInt("count",count)
+                putSerializable("food", foodViewModel.food.value)
+                putInt("count", foodViewModel.count.value ?: 0)
             }
             findNavController().navigate(R.id.action_foodDetailFragment2_to_paymentFragment, bundle)
         }
 
+        if (foodViewModel.food.value == null) {
+            val food = args.food
+            foodViewModel.setFood(food)
+        }
     }
 
     private fun setContent(food: Food) {
         binding.txtName.text = food.name
-        binding.txtPrice.text= food.price.toString()
-        binding.textView10.text=food.description
+        binding.txtPrice.text = food.price.toString()
+        binding.textView10.text = food.description
         Glide.with(this)
             .load(food.image)
             .placeholder(R.drawable.image_newspaper)
@@ -69,7 +79,5 @@ class FoodDetailFragment : Fragment(R.layout.fragment_food_detail) {
         val totalPrice = if (count == 0) 0 else count * pricePerItem
         binding.txtPrice.text = totalPrice.toString()
     }
-
-
 
 }

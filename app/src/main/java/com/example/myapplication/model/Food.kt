@@ -4,7 +4,7 @@ import java.io.Serializable
 import java.time.LocalDateTime
 
 data class Food(
-        val id: String,
+        val id: Int,
         val name: String,
         val image: String,
         val price:Int,

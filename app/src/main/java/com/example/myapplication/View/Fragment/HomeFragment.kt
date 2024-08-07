@@ -31,6 +31,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setupHomeRecycler()
 
         foodAdapter.setOnItemClickListener {
+            foodViewModel.setCount(0)
             val bundle = Bundle().apply {
                 putSerializable("food", it)
             }
