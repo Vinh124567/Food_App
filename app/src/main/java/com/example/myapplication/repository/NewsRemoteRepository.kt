@@ -18,5 +18,6 @@ class NewsRemoteRepository {
         return RetrofitInstance.api.login(loginRequest)
     }
 
+
     suspend fun getNewFood()=RetrofitInstance.api.getNewFood()
 }

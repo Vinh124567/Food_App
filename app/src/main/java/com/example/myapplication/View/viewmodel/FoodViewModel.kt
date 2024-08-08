@@ -112,5 +112,8 @@ class FoodViewModel(app: Application, private val newsRemoteRepository: NewsRemo
             }
         }
     }
+
+
+
     
 }

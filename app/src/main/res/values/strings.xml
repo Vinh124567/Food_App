@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">My Application</string>
-
     <string name="my_text"> <u>Fogot Password</u>.</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string  name="default_web_client_id" >79546550160-5tvqj6g1uljobhqo8889cr5u3q099s5q.apps.googleusercontent.com</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="spinner_items">
         <item>Item 1</item>
