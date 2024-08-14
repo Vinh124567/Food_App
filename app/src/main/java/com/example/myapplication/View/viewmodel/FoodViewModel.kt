@@ -1,51 +1,66 @@
 package com.example.myapplication.View.viewmodel
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.api.RetrofitInstance
+import com.example.myapplication.Firebase.FirebaseAuthManager
+import com.example.myapplication.GoogleSigning.GoogleSignInManager
 import com.example.myapplication.model.Food
 import com.example.myapplication.model.FoodReponse
 import com.example.myapplication.model.Order
+import com.example.myapplication.model.OrderDTO
 import com.example.myapplication.model.User
 import com.example.myapplication.repository.NewsRemoteRepository
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FoodViewModel(app: Application, private val newsRemoteRepository: NewsRemoteRepository) : AndroidViewModel(app) {
 
-    val foodLiveData = MutableLiveData<List<Food>>()
-    val newFoodLiveData = MutableLiveData<List<Food>>()
+    private lateinit var googleSignInManager: GoogleSignInManager
+    private lateinit var firebaseAuthManager: FirebaseAuthManager
+
+    val listFoodLiveData = MutableLiveData<List<Food>>()
+    val listNewFoodLiveData = MutableLiveData<List<Food>>()
 
     val newOrderResult: MutableLiveData<FoodReponse<Order>> = MutableLiveData()
+    val listOrderResult: MutableLiveData<List<OrderDTO>> = MutableLiveData()
+
 
     val errorLiveData = MutableLiveData<String>()
-    val _loginResult = MutableLiveData<User>()
+    val successLiveData= MutableLiveData<String>()
 
+    val emailResult = MutableLiveData<FirebaseUser?>()
 
+    val userDetail=MutableLiveData<User?>()
 
-    private val foodDetail = MutableLiveData<Food>()
-    val food: LiveData<Food> get() = foodDetail
+    val googleSignInResult = MutableLiveData<Pair<FirebaseUser?,Boolean>>()
+    val signInError = MutableLiveData<String?>()
+
+    fun initializeManagers(context: Context) {
+        googleSignInManager = GoogleSignInManager(context)
+        firebaseAuthManager = FirebaseAuthManager()
+    }
+
 
     private val _count = MutableLiveData<Int>()
     val count: LiveData<Int> get() = _count
 
-    fun setFood(newFood: Food) {
-        foodDetail.value = newFood
-    }
 
     fun setCount(newCount: Int) {
         _count.value = newCount
     }
 
-    fun newOrder(order: Order) {
+    fun addNewOrder(order: Order) {
         viewModelScope.launch {
             try {
                 val response =withContext(Dispatchers.IO) {
-                    RetrofitInstance.api.newOrder(order)
+                    newsRemoteRepository.addNewOrder(order)
                 }
                 if (response.isSuccessful && response.body() != null) {
                     newOrderResult.postValue(response.body())
@@ -58,16 +73,41 @@ class FoodViewModel(app: Application, private val newsRemoteRepository: NewsRemo
         }
     }
 
-    fun fetchAllFood() {
+    fun getOrder(userId:String){
+        viewModelScope.launch {
+            try {
+                val response =withContext(Dispatchers.IO) {
+                    newsRemoteRepository.getOrder(userId)
+                }
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if(responseBody!=null) {
+                        listOrderResult.value = responseBody.data ?: emptyList()
+                    }
+                } else {
+                    errorLiveData.postValue("Error: ${response.code()} ${response.message()}")
+                }
+            } catch (e: Exception) {
+                errorLiveData.postValue("Exception: ${e.message}")
+            }
+        }
+    }
+
+    fun getAllFood() {
         viewModelScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
                     newsRemoteRepository.getAllFood()
                 }
                 if (response.isSuccessful) {
-                    foodLiveData.value = response.body() ?: emptyList()
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        listFoodLiveData.value = responseBody.data ?: emptyList()
+                    } else {
+                        errorLiveData.value = "No food found"
+                    }
                 } else {
-                    errorLiveData.value = "Error: ${response.code()}"
+                    errorLiveData.value = "Error: ${response.message()}"
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -76,16 +116,21 @@ class FoodViewModel(app: Application, private val newsRemoteRepository: NewsRemo
         }
     }
 
-    fun fetchNewFood() {
+
+
+    fun getNewFood() {
         viewModelScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
                     newsRemoteRepository.getNewFood()
                 }
                 if (response.isSuccessful) {
-                    newFoodLiveData.value = response.body() ?: emptyList()
+                    response.body()?.let { responseSuccess ->
+                        val foodList = responseSuccess.data ?: emptyList()
+                        listNewFoodLiveData.value = foodList
+                    }
                 } else {
-                    errorLiveData.value = "Error: ${response.code()}"
+                    errorLiveData.value = "Error: ${response.message()}"
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -94,23 +139,97 @@ class FoodViewModel(app: Application, private val newsRemoteRepository: NewsRemo
         }
     }
 
-    fun requestLogin(email: String, password: String) {
+
+
+    fun createUser(user: User) {
         viewModelScope.launch {
             try {
-                val response = newsRemoteRepository.login(email, password)
+                val response = withContext(Dispatchers.IO) {
+                    newsRemoteRepository.createUser(user)
+                }
                 if (response.isSuccessful) {
-                    response.body()?.let {
-                        _loginResult.value = it
-                    } ?: run {
-                        errorLiveData.value = "Login failed: Response body is null"
+                    response.body()?.let { responseSuccess ->
+                        successLiveData.postValue(responseSuccess.message)
                     }
                 } else {
-                    errorLiveData.value = response.errorBody()?.string() ?: "Unknown error"
+                    errorLiveData.postValue("Error: ${response.message()}")
                 }
             } catch (e: Exception) {
-                errorLiveData.value = "Exception: ${e.message}"
+                e.printStackTrace()
+                errorLiveData.postValue("Exception: ${e.message}")
             }
         }
+    }
+
+
+
+    fun signUpWithEmail(email: String, password: String) {
+        firebaseAuthManager.signUpWithEmail(email, password,
+            onSuccess = { user ->
+                emailResult.value = user
+            },
+            onFailure = { e ->
+                signInError.value = e.message
+            })
+    }
+
+    fun signInWithEmail(email: String, password: String) {
+        firebaseAuthManager.signInWithEmail(email, password,
+            onSuccess = { user ->
+                emailResult.value = user
+            },
+            onFailure = { e ->
+                signInError.value = e.message
+            })
+    }
+
+    fun getGoogleSignInIntent(): Intent {
+        return googleSignInManager.getSignInIntent()
+    }
+
+    fun signInWithGoogle(data: Intent?) {
+        googleSignInManager.handleSignInResult(data,
+            onSuccess = { credential ->
+                firebaseAuthManager.signInWithCredential(credential,
+                    onSuccess = { user,isNewUser ->
+                        googleSignInResult.value = Pair(user, isNewUser)
+                    },
+                    onFailure = { e ->
+                        signInError.value = e.message
+                    })
+            },
+            onFailure = {
+                signInError.value = it.message
+            })
+    }
+
+    fun getUserDetail(userId: String) {
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    newsRemoteRepository.getUserDetail(userId)
+                }
+                if (response.isSuccessful) {
+                    val foodResponse = response.body()
+                    if (foodResponse != null && foodResponse.data != null) {
+                        userDetail.postValue(foodResponse.data)
+                    } else {
+                        errorLiveData.postValue("User not found or empty response")
+                    }
+                } else {
+                    errorLiveData.postValue("Error: ${response.message()}")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                errorLiveData.postValue("Exception: ${e.message}")
+            }
+        }
+    }
+
+
+
+    fun signOut(){
+        googleSignInManager.signOut()
     }
 
 

@@ -14,6 +14,7 @@ import com.example.myapplication.adapter.FoodAdapter
 import com.example.myapplication.adapter.MyViewPagerAdapter
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -31,46 +32,46 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setupHomeRecycler()
 
         foodAdapter.setOnItemClickListener {
-            foodViewModel.setCount(0)
+            foodViewModel.setCount(1)
             val bundle = Bundle().apply {
                 putSerializable("food", it)
             }
             findNavController().navigate(R.id.action_homeFragment_to_foodDetailFragment2,bundle)
         }
 
-        foodViewModel.foodLiveData.observe(viewLifecycleOwner, Observer { foodList ->
+        foodViewModel.listFoodLiveData.observe(viewLifecycleOwner, Observer { foodList ->
             foodAdapter.differ.submitList(foodList)
         })
 
-        foodViewModel.fetchAllFood()
+        foodViewModel.getAllFood()
 
         setupTabLayoutAndViewPager()
     }
 
-    private fun setupTabLayoutAndViewPager() {
-        val tabLayout: TabLayout = binding.tabLayout
-        val viewPager2: ViewPager2 = binding.viewPager
 
-        val myViewPagerAdapter = MyViewPagerAdapter(requireActivity())
-        viewPager2.adapter = myViewPagerAdapter
+private fun setupTabLayoutAndViewPager() {
+    val tabLayout: TabLayout = binding.tabLayout
+    val viewPager2: ViewPager2 = binding.viewPager
 
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                viewPager2.currentItem = tab.position
-            }
+    val fragments = listOf(
+        NewTasteFragment(),
+        PopularFragment(),
+        RecommendedFragment()
+    )
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
+    val fragmentTitles = listOf(
+        "New Taste",
+        "Popular",
+        "Recommended"
+    )
+    val myViewPagerAdapter = MyViewPagerAdapter(requireActivity(), fragments,fragmentTitles)
+    viewPager2.adapter = myViewPagerAdapter
 
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
+    TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
+        tab.text = myViewPagerAdapter.getPageTitle(position)
+    }.attach()
+}
 
-        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                tabLayout.getTabAt(position)?.select()
-            }
-        })
-    }
 
     private fun setupHomeRecycler() {
         foodAdapter = FoodAdapter()

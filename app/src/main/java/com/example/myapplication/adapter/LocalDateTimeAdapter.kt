@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter
 
 class LocalDateTimeAdapter : JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
     private val formatter = DateTimeFormatter.ISO_DATE_TIME
-
     override fun serialize(
         src: LocalDateTime,
         typeOfSrc: Type,

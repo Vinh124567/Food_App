@@ -23,11 +23,11 @@ class NewTasteFragment : Fragment(R.layout.fragment_new_taste) {
         _binding = FragmentPopularBinding.bind(view)
         foodViewModel = (activity as MainActivity).foodViewModel
         setupHomeRecycler()
-        foodViewModel.newFoodLiveData.observe(viewLifecycleOwner, Observer { foodList ->
+        foodViewModel.listNewFoodLiveData.observe(viewLifecycleOwner, Observer { foodList ->
             popularAdapter.differ.submitList(foodList)
         })
 
-        foodViewModel.fetchNewFood()
+        foodViewModel.getNewFood()
     }
 
     private fun setupHomeRecycler() {

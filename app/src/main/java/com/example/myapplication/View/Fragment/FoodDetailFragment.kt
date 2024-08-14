@@ -17,20 +17,19 @@ class FoodDetailFragment : Fragment(R.layout.fragment_food_detail) {
     private val args: FoodDetailFragmentArgs by navArgs()
     private lateinit var binding: FragmentFoodDetailBinding
     private lateinit var foodViewModel: FoodViewModel
-    var count: Int = 0
+    var count: Int = 1
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         foodViewModel = (activity as MainActivity).foodViewModel
         binding = FragmentFoodDetailBinding.bind(view)
+        val food =args.food
 
-        foodViewModel.food.observe(viewLifecycleOwner) { food ->
-            if (food != null) {
-                setContent(food)
-            }
-        }
+        setContent(food)
 
         foodViewModel.count.observe(viewLifecycleOwner) { count ->
             binding.textView11.text = count.toString()
+            val price=count*food.price
+            binding.txtPrice.text = price.toString()
         }
 
         binding.btnBack.setOnClickListener {
@@ -38,13 +37,13 @@ class FoodDetailFragment : Fragment(R.layout.fragment_food_detail) {
         }
 
         binding.imgAdd.setOnClickListener {
-            val newCount = (foodViewModel.count.value ?: 0) + 1
+            val newCount = (foodViewModel.count.value ?: 1) + 1
             foodViewModel.setCount(newCount)
         }
 
         binding.imgReduce.setOnClickListener {
-            val currentCount = foodViewModel.count.value ?: 0
-            if (currentCount > 0) {
+            val currentCount = foodViewModel.count.value ?: 1
+            if (currentCount > 1) {
                 val newCount = currentCount - 1
                 foodViewModel.setCount(newCount)
             }
@@ -52,15 +51,10 @@ class FoodDetailFragment : Fragment(R.layout.fragment_food_detail) {
 
         binding.btnOrder.setOnClickListener {
             val bundle = Bundle().apply {
-                putSerializable("food", foodViewModel.food.value)
+                putSerializable("food",food)
                 putInt("count", foodViewModel.count.value ?: 0)
             }
             findNavController().navigate(R.id.action_foodDetailFragment2_to_paymentFragment, bundle)
-        }
-
-        if (foodViewModel.food.value == null) {
-            val food = args.food
-            foodViewModel.setFood(food)
         }
     }
 

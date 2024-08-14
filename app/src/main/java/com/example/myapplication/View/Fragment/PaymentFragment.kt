@@ -30,15 +30,20 @@ class PaymentFragment : Fragment(R.layout.fragment_payment) {
         food = args.food
         count = args.count
 
-        foodViewModel._loginResult.observe(viewLifecycleOwner, Observer { user ->
+        foodViewModel.emailResult.observe(viewLifecycleOwner, Observer { user ->
+            if (user != null) {
+                 foodViewModel.getUserDetail(user.uid)
+            } else {
+            }
+        })
+
+        foodViewModel.userDetail.observe(viewLifecycleOwner, Observer { user ->
             user?.let {
                 setContent(food, it, count)
-
-                // Tạo đối tượng Order, kiểm tra null
                 val order = order(it, food)
                 if (order != null) {
                     binding.btnPayment.setOnClickListener {
-                        foodViewModel.newOrder(order)
+                        foodViewModel.addNewOrder(order)
                         findNavController().navigate(R.id.action_paymentFragment_to_yourOrdersFragment)
                     }
                 } else {
@@ -50,17 +55,13 @@ class PaymentFragment : Fragment(R.layout.fragment_payment) {
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
-
-
-
-
-
-
     }
-    private fun setContent(food: Food,user: User,count:Int) {
+    private fun setContent(food: Food,user:User,count:Int) {
+        val total=count*food.price
         binding.txtQuantity.text=count.toString()
         binding.txtCustomerName.text=user.name.toString()
         binding.txtPhone.text=user.phoneNumber.toString()
+        binding.txtTotal.text=total.toString()
         binding.txtAddress.text=user.address.toString()
         binding.txtHouseNo.text=user.houseNumber.toString()
         binding.txtCity.text=user.City.toString()
@@ -78,6 +79,6 @@ class PaymentFragment : Fragment(R.layout.fragment_payment) {
         var foodId=food.id
         var total=binding.txtTotal.text.toString().toInt()
         val quantity: Int = binding.txtQuantity.text.toString().toInt()
-        return Order(0,userId,foodId,quantity,"Đã thanh toán",total)
+        return Order(0,userId,foodId,quantity,"Processing",total)
     }
 }

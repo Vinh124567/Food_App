@@ -1,12 +1,11 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
 buildscript {
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.google.gms:google-services:4.3.10")
+        classpath("com.google.gms:google-services:4.3.15")
         val navVersion = "2.7.5"
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion")
     }
