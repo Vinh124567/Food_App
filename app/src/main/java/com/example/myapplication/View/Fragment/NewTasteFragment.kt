@@ -1,6 +1,7 @@
 package com.example.myapplication.View.Fragment
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,11 +24,18 @@ class NewTasteFragment : Fragment(R.layout.fragment_new_taste) {
         _binding = FragmentPopularBinding.bind(view)
         foodViewModel = (activity as MainActivity).foodViewModel
         setupHomeRecycler()
-        foodViewModel.listNewFoodLiveData.observe(viewLifecycleOwner, Observer { foodList ->
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        foodViewModel.listFoodLiveData.observe(viewLifecycleOwner, Observer { foodList ->
             popularAdapter.differ.submitList(foodList)
         })
-
-        foodViewModel.getNewFood()
+        foodViewModel.errorLiveData.observe(viewLifecycleOwner, Observer { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun setupHomeRecycler() {

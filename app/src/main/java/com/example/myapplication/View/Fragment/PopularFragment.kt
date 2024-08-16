@@ -2,6 +2,7 @@ package com.example.myapplication.View.Fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,11 +24,18 @@ class PopularFragment : Fragment(R.layout.fragment_popular) {
         _binding = FragmentPopularBinding.bind(view)
         foodViewModel = (activity as MainActivity).foodViewModel
         setupHomeRecycler()
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
         foodViewModel.listFoodLiveData.observe(viewLifecycleOwner, Observer { foodList ->
             popularAdapter.differ.submitList(foodList)
         })
-
-        foodViewModel.getAllFood()
+        foodViewModel.errorLiveData.observe(viewLifecycleOwner, Observer { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun setupHomeRecycler() {

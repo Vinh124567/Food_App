@@ -5,34 +5,30 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
 import com.example.myapplication.View.MainActivity
-import com.example.myapplication.View.viewmodel.FoodViewModel
+import com.example.myapplication.View.viewmodel.AuthViewModel
 import com.example.myapplication.databinding.FragmentLoginBinding
+import com.google.firebase.auth.FirebaseUser
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
-    private lateinit var binding: FragmentLoginBinding
-    private lateinit var email: String
-    private lateinit var password: String
-    private lateinit var foodViewModel: FoodViewModel
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var authViewModel: AuthViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentLoginBinding.bind(view)
-        foodViewModel = (activity as MainActivity).foodViewModel
-        foodViewModel.initializeManagers(requireContext())
+        _binding = FragmentLoginBinding.bind(view)
+        authViewModel = (activity as MainActivity).authViewModel
+
 
         binding.btnSignIn.setOnClickListener {
-            email = binding.edtEmail.text.toString().trim()
-            password = binding.edtPassword.text.toString().trim()
-
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(requireContext(), "Vui lòng nhập email và mật khẩu", Toast.LENGTH_SHORT).show()
-            } else {
-                foodViewModel.signInWithEmail(email, password)
+            val email = binding.edtEmail.text.toString().trim()
+            val password = binding.edtPassword.text.toString().trim()
+            if (validateInput(email, password)) {
+                authViewModel.signInWithEmail(email, password)
             }
         }
 
@@ -40,50 +36,58 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
         }
 
-        foodViewModel.emailResult.observe(viewLifecycleOwner, Observer { user ->
-            user?.let {
-                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-            }
-        })
-
-        foodViewModel.errorLiveData.observe(viewLifecycleOwner, Observer { error ->
-            Toast.makeText(requireContext(), "Login failed: $error", Toast.LENGTH_SHORT).show()
-        })
-
         binding.btnGoogle.setOnClickListener {
-            foodViewModel.signOut()
-            startActivityForResult(foodViewModel.getGoogleSignInIntent(), RC_SIGN_IN)
+            authViewModel.signOut()
+            startActivityForResult(authViewModel.getGoogleSignInIntent(), RC_SIGN_IN)
         }
 
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        foodViewModel.googleSignInResult.observe(viewLifecycleOwner) { result ->
-            result?.let { (user, isNewUser) ->
-                if (user != null) {
-                    if (isNewUser) {
-                        // Nếu là người dùng mới, chuyển đến màn hình nhập thông tin cá nhân
-                        findNavController().navigate(R.id.action_loginFragment_to_addressFragment)
-                    } else {
-                        // Nếu là người dùng cũ, chuyển đến màn hình home
-                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                    }
+        authViewModel.authResult.observe(viewLifecycleOwner) { result ->
+            handleSignInResult(result)
+        }
+        authViewModel.authError.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                Toast.makeText(context, "Authentication Failed: $it", Toast.LENGTH_SHORT).show()
+                authViewModel.authError.value = null
+            }
+        }
+    }
+
+    private fun handleSignInResult(result: Pair<FirebaseUser?, Boolean?>?) {
+        result?.let { (user, isNewUser) ->
+            if (user != null) {
+                if (isNewUser == true) {
+                    findNavController().navigate(R.id.action_loginFragment_to_addressFragment)
+                } else {
+                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
             }
         }
+    }
 
-        foodViewModel.signInError.observe(viewLifecycleOwner) { error ->
-            error?.let {
-                Toast.makeText(context, "Authentication Failed: $it", Toast.LENGTH_SHORT).show()
-            }
+    private fun validateInput(email: String, password: String): Boolean {
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(requireContext(), "Vui lòng nhập email và mật khẩu", Toast.LENGTH_SHORT).show()
+            return false
         }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(requireContext(), "Email không hợp lệ", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (password.length < 6) {
+            Toast.makeText(requireContext(), "Mật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
-            foodViewModel.signInWithGoogle(data)
+            authViewModel.signInWithGoogle(data)
         }
     }
 
@@ -91,5 +95,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         private const val RC_SIGN_IN = 9001
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }

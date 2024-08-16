@@ -2,6 +2,7 @@ package com.example.myapplication.View.Fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -28,9 +29,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         _binding = FragmentHomeBinding.bind(view)
 
         foodViewModel = (activity as MainActivity).foodViewModel
-
         setupHomeRecycler()
+        initAdapter()
+        observeViewModel()
+        setupTabLayoutAndViewPager()
+    }
 
+
+    private fun initAdapter() {
         foodAdapter.setOnItemClickListener {
             foodViewModel.setCount(1)
             val bundle = Bundle().apply {
@@ -39,17 +45,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             findNavController().navigate(R.id.action_homeFragment_to_foodDetailFragment2,bundle)
         }
 
+    }
+
+    private fun observeViewModel() {
         foodViewModel.listFoodLiveData.observe(viewLifecycleOwner, Observer { foodList ->
             foodAdapter.differ.submitList(foodList)
         })
 
-        foodViewModel.getAllFood()
-
-        setupTabLayoutAndViewPager()
+        foodViewModel.errorLiveData.observe(viewLifecycleOwner, Observer { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
-
-private fun setupTabLayoutAndViewPager() {
+    private fun setupTabLayoutAndViewPager() {
     val tabLayout: TabLayout = binding.tabLayout
     val viewPager2: ViewPager2 = binding.viewPager
 
@@ -71,7 +81,6 @@ private fun setupTabLayoutAndViewPager() {
         tab.text = myViewPagerAdapter.getPageTitle(position)
     }.attach()
 }
-
 
     private fun setupHomeRecycler() {
         foodAdapter = FoodAdapter()

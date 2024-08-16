@@ -7,24 +7,25 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.View.MainActivity
-import com.example.myapplication.View.viewmodel.FoodViewModel
+import com.example.myapplication.View.viewmodel.AuthViewModel
+import com.example.myapplication.View.viewmodel.OrderViewModel
 import com.example.myapplication.adapter.FoodOrderAdapter
 import com.example.myapplication.databinding.FragmentInProgressBinding
 
 
 class InProgressFragment : Fragment(R.layout.fragment_in_progress) {
     private lateinit var foodOrderAdapter: FoodOrderAdapter
-    private lateinit var foodViewModel: FoodViewModel
+    private lateinit var authViewModel: AuthViewModel
     private lateinit var binding: FragmentInProgressBinding
-
+    private lateinit var orderViewModel: OrderViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentInProgressBinding.bind(view)
-        foodViewModel = (activity as MainActivity).foodViewModel
-
+        orderViewModel= (activity as MainActivity).orderViewModel
+        authViewModel= (activity as MainActivity).authViewModel
         setupHomeRecycler()
 
-        foodViewModel.listOrderResult.observe(viewLifecycleOwner, Observer { list ->
+        orderViewModel.listOrderResult.observe(viewLifecycleOwner, Observer { list ->
             list?.let {
                 val filteredList = it.filter { order ->
                     order.state =="Processing"
@@ -34,12 +35,16 @@ class InProgressFragment : Fragment(R.layout.fragment_in_progress) {
         })
 
 
-        foodViewModel.emailResult.observe(viewLifecycleOwner, Observer { user ->
-            if (user != null) {
-                foodViewModel.getOrder(user.uid)
+        authViewModel.authResult.observe(viewLifecycleOwner, Observer { signInResult ->
+            if (signInResult != null) {
+                val user = signInResult.first
+                user?.uid?.let { uid ->
+                    orderViewModel.getOrder(uid)
+                }
             } else {
             }
         })
+
     }
 
     private fun setupHomeRecycler() {
