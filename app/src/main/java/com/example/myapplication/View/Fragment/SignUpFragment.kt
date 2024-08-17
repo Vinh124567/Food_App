@@ -27,28 +27,18 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             val password = binding.edtPassword.text.toString().trim()
             val name = binding.edtName.text.toString().trim()
             if (validateInput(email, password,name)) {
-                authViewModel.signUpWithEmail(email, password)
+                val bundle = Bundle().apply {
+                    putString("email", email)
+                    putString("password", password)
+                    putString("name", name)
+                }
+                findNavController().navigate(R.id.action_signUpFragment_to_addressFragment,bundle)
             }
         }
-
         binding.btnBack.setOnClickListener {
             findNavController().navigate(R.id.action_signUpFragment_to_loginFragment2)
         }
-        observeViewModel()
-    }
 
-    private fun observeViewModel() {
-        authViewModel.authResult.observe(viewLifecycleOwner) { result ->
-            result?.let {
-                        findNavController().navigate(R.id.action_signUpFragment_to_addressFragment)
-                }
-            }
-        authViewModel.authError.observe(viewLifecycleOwner) { error ->
-            error?.let {
-                Toast.makeText(context, "Authentication Failed: $it", Toast.LENGTH_SHORT).show()
-                authViewModel.authError.value = null
-            }
-        }
     }
 
     private fun validateInput(email: String, password: String, name: String): Boolean {

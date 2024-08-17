@@ -25,16 +25,7 @@ class GoogleSignInManager(private val context: Context) {
         return googleSignInClient.signInIntent
     }
 
-//    fun handleSignInResult(data: Intent?, onSuccess: (AuthCredential) -> Unit, onFailure: (Exception) -> Unit) {
-//        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-//        try {
-//            val account = task.getResult(ApiException::class.java)!!
-//            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-//            onSuccess(credential)
-//        } catch (e: ApiException) {
-//            onFailure(e)
-//        }
-//    }
+
 suspend fun handleSignInResult(data: Intent?): AuthCredential {
     val task = GoogleSignIn.getSignedInAccountFromIntent(data)
     return try {

@@ -9,6 +9,15 @@
         android:id="@+id/addressFragment"
         android:name="com.example.myapplication.View.Fragment.AddressFragment"
         android:label="AddressFragment" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <argument
+            android:name="password"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
         <action
             android:id="@+id/action_addressFragment_to_singUpSuccessFragment"
             app:destination="@id/singUpSuccessFragment" />

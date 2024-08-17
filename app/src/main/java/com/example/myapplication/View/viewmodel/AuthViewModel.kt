@@ -1,6 +1,4 @@
 package com.example.myapplication.View.viewmodel
-
-
 import android.app.Application
 import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
@@ -49,25 +47,7 @@ class AuthViewModel(app: Application, private val newsRemoteRepository: NewsRemo
 
 
 
-//    fun signUpWithEmail(email: String, password: String) {
-//        firebaseAuthManager.signUpWithEmail(email, password,
-//            onSuccess = { user ->
-//                authResult.value = Pair(user,null)
-//            },
-//            onFailure = { e ->
-//                authError.value = e.message
-//            })
-//    }
-//
-//    fun signInWithEmail(email: String, password: String) {
-//        firebaseAuthManager.signInWithEmail(email, password,
-//            onSuccess = { user ->
-//                authResult.value = Pair(user,null)
-//            },
-//            onFailure = { e ->
-//                authError.value = e.message
-//            })
-//    }
+
 
     fun signUpWithEmail(email: String, password: String) {
         viewModelScope.launch {
@@ -91,25 +71,6 @@ class AuthViewModel(app: Application, private val newsRemoteRepository: NewsRemo
         }
     }
 
-//    fun getGoogleSignInIntent(): Intent {
-//        return googleSignInManager.getSignInIntent()
-//    }
-//
-//    fun signInWithGoogle(data: Intent?) {
-//        googleSignInManager.handleSignInResult(data,
-//            onSuccess = { credential ->
-//                firebaseAuthManager.signInWithCredential(credential,
-//                    onSuccess = { user,isNewUser ->
-//                        authResult.value = Pair(user,isNewUser)
-//                    },
-//                    onFailure = { e ->
-//                        authError.value = e.message
-//                    })
-//            },
-//            onFailure = {
-//                authError.value = it.message
-//            })
-//    }
 
     fun signInWithGoogle(data: Intent?) {
         viewModelScope.launch {
