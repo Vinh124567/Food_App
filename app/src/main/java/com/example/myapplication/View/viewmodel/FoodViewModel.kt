@@ -17,9 +17,8 @@ class FoodViewModel(app: Application, private val newsRemoteRepository: NewsRemo
 
     val listFoodLiveData = MutableLiveData<List<Food>>()
     val listNewFoodLiveData = MutableLiveData<List<Food>>()
+
     val errorLiveData = MutableLiveData<String>()
-
-
     val _count = MutableLiveData<Int>() 
     val count: LiveData<Int> get() = _count
 

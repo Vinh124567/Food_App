@@ -33,7 +33,7 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
             userId=firebaseUser.first?.email.toString()
         }
 
-        val items = listOf("Item 1", "Item 2", "Item 3")
+        val items = listOf("Ninh Bình", "Nam Định", "Hà Nam")
         val adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item, // Layout cho các mục Spinner
@@ -57,5 +57,7 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
         city = binding.spinnerAddress.selectedItem.toString()
         return  User (userId,"vinh", email, address, phone, house, city)
     }
+
+
 
     }

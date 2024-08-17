@@ -9,6 +9,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.coroutines.tasks.await
 
 class GoogleSignInManager(private val context: Context) {
 
@@ -24,16 +25,27 @@ class GoogleSignInManager(private val context: Context) {
         return googleSignInClient.signInIntent
     }
 
-    fun handleSignInResult(data: Intent?, onSuccess: (AuthCredential) -> Unit, onFailure: (Exception) -> Unit) {
-        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-        try {
-            val account = task.getResult(ApiException::class.java)!!
-            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-            onSuccess(credential)
-        } catch (e: ApiException) {
-            onFailure(e)
-        }
+//    fun handleSignInResult(data: Intent?, onSuccess: (AuthCredential) -> Unit, onFailure: (Exception) -> Unit) {
+//        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+//        try {
+//            val account = task.getResult(ApiException::class.java)!!
+//            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+//            onSuccess(credential)
+//        } catch (e: ApiException) {
+//            onFailure(e)
+//        }
+//    }
+suspend fun handleSignInResult(data: Intent?): AuthCredential {
+    val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+    return try {
+        val account = task.await() // Chờ kết quả từ task
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+        credential
+    } catch (e: ApiException) {
+        throw e
     }
+}
+
 
     fun signOut() {
         googleSignInClient.signOut()

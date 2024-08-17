@@ -49,44 +49,82 @@ class AuthViewModel(app: Application, private val newsRemoteRepository: NewsRemo
 
 
 
+//    fun signUpWithEmail(email: String, password: String) {
+//        firebaseAuthManager.signUpWithEmail(email, password,
+//            onSuccess = { user ->
+//                authResult.value = Pair(user,null)
+//            },
+//            onFailure = { e ->
+//                authError.value = e.message
+//            })
+//    }
+//
+//    fun signInWithEmail(email: String, password: String) {
+//        firebaseAuthManager.signInWithEmail(email, password,
+//            onSuccess = { user ->
+//                authResult.value = Pair(user,null)
+//            },
+//            onFailure = { e ->
+//                authError.value = e.message
+//            })
+//    }
+
     fun signUpWithEmail(email: String, password: String) {
-        firebaseAuthManager.signUpWithEmail(email, password,
-            onSuccess = { user ->
-                authResult.value = Pair(user,null)
-            },
-            onFailure = { e ->
+        viewModelScope.launch {
+            try {
+                val user = firebaseAuthManager.signUpWithEmail(email, password)
+                authResult.value = Pair(user, null)
+            } catch (e: Exception) {
                 authError.value = e.message
-            })
+            }
+        }
     }
 
     fun signInWithEmail(email: String, password: String) {
-        firebaseAuthManager.signInWithEmail(email, password,
-            onSuccess = { user ->
-                authResult.value = Pair(user,null)
-            },
-            onFailure = { e ->
+        viewModelScope.launch {
+            try {
+                val user = firebaseAuthManager.signInWithEmail(email, password)
+                authResult.value = Pair(user, null)
+            } catch (e: Exception) {
                 authError.value = e.message
-            })
+            }
+        }
+    }
+
+//    fun getGoogleSignInIntent(): Intent {
+//        return googleSignInManager.getSignInIntent()
+//    }
+//
+//    fun signInWithGoogle(data: Intent?) {
+//        googleSignInManager.handleSignInResult(data,
+//            onSuccess = { credential ->
+//                firebaseAuthManager.signInWithCredential(credential,
+//                    onSuccess = { user,isNewUser ->
+//                        authResult.value = Pair(user,isNewUser)
+//                    },
+//                    onFailure = { e ->
+//                        authError.value = e.message
+//                    })
+//            },
+//            onFailure = {
+//                authError.value = it.message
+//            })
+//    }
+
+    fun signInWithGoogle(data: Intent?) {
+        viewModelScope.launch {
+            try {
+                val credential = googleSignInManager.handleSignInResult(data)
+                val (user, isNewUser) = firebaseAuthManager.signInWithCredential(credential)
+                authResult.value = Pair(user, isNewUser)
+            } catch (e: Exception) {
+                authError.value = e.message
+            }
+        }
     }
 
     fun getGoogleSignInIntent(): Intent {
         return googleSignInManager.getSignInIntent()
-    }
-
-    fun signInWithGoogle(data: Intent?) {
-        googleSignInManager.handleSignInResult(data,
-            onSuccess = { credential ->
-                firebaseAuthManager.signInWithCredential(credential,
-                    onSuccess = { user,isNewUser ->
-                        authResult.value = Pair(user,isNewUser)
-                    },
-                    onFailure = { e ->
-                        authError.value = e.message
-                    })
-            },
-            onFailure = {
-                authError.value = it.message
-            })
     }
 
     fun getUserDetail(userId: String) {
