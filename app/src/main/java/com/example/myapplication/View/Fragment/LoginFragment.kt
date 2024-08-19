@@ -1,5 +1,4 @@
 package com.example.myapplication.View.Fragment
-
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
