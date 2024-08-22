@@ -4,7 +4,10 @@ plugins {
     id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
+
+
 
 android {
     namespace = "com.example.myapplication"
@@ -87,6 +90,10 @@ dependencies {
     implementation ("com.google.android.gms:play-services-auth:20.7.0")
     //firebase
     implementation("com.google.firebase:firebase-auth:23.0.0")
+    //
+    implementation("com.makeramen:roundedimageview:2.3.0")
 
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
+    kapt("com.github.bumptech.glide:compiler:4.15.1")
 
 }

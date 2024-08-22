@@ -49,15 +49,18 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageButton
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+        <!-- Hình ảnh mặc định -->
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgBtnAvatar"
+            android:layout_width="100sp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:background="@drawable/layer"
-            android:text="Add Photo"
-            android:src="@drawable/order"
-            android:textColor="@color/silver" />
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/roundedImageView" />
 
         <TextView
             android:layout_width="wrap_content"

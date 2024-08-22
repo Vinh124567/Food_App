@@ -1,5 +1,6 @@
 package com.example.myapplication.View.Fragment
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -27,6 +28,7 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
     private lateinit var city: String
     private lateinit var binding: FragmentAddressBinding
     private lateinit var authViewModel: AuthViewModel
+    private lateinit var imageUri: Uri
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,6 +37,7 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
         email = args.email
         password = args.password
         name = args.name
+        imageUri=Uri.parse(args.uri)
 
         val items = listOf("Ninh Bình", "Nam Định", "Hà Nam")
         val adapter = ArrayAdapter(
@@ -46,6 +49,10 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
             }
             binding.spinnerAddress.adapter = adapter
 
+            binding.btnBack.setOnClickListener {
+                findNavController().navigate(R.id.action_addressFragment_to_signUpFragment)
+            }
+
             binding.btnSignUpNow.setOnClickListener {
                 authViewModel.signUpWithEmail(email, password)
             }
@@ -53,6 +60,9 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
         }
 
     private fun observeViewModel() {
+        authViewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->
+            binding.paginationProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
         authViewModel.authResult.observe(viewLifecycleOwner) { result ->
             handleSignInResult(result)
         }
@@ -64,12 +74,13 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
         }
     }
 
+
     private fun handleSignInResult(result: Pair<FirebaseUser?, Boolean?>?) {
         result?.let {
             if (it.first != null) {
                 userId = it.first!!.uid
                 val user = createUser()
-                authViewModel.createUser(user)
+                authViewModel.createUser(user,imageUri)
                 authViewModel.successLiveData.observe(viewLifecycleOwner) { success ->
                     if (success != null) {
                         findNavController().navigate(R.id.action_addressFragment_to_singUpSuccessFragment)
@@ -89,7 +100,7 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
         phone = binding.edtPhone.text.toString()
         address = binding.edtAddress.text.toString()
         city = binding.spinnerAddress.selectedItem.toString()
-        return  User (userId,name, email, address, phone, house, city)
+        return  User (userId,name, email, address, phone, house,city)
     }
 
 

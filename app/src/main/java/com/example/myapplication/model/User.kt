@@ -7,5 +7,6 @@ data class User (
     var address: String? = null,
     var phoneNumber: String? = null,
     var houseNumber: String? = null,
-    var City: String? = null
+    var City: String? = null,
+    var imageUrl: String? = null
 )

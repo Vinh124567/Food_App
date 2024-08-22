@@ -44,6 +44,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun observeViewModel() {
+        authViewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->
+            binding.paginationProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
         authViewModel.authResult.observe(viewLifecycleOwner) { result ->
             handleSignInResult(result)
         }

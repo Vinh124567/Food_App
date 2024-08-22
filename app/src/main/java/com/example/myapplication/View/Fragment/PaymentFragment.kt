@@ -32,16 +32,14 @@ class PaymentFragment : Fragment(R.layout.fragment_payment) {
         orderViewModel= (activity as MainActivity).orderViewModel
         authViewModel = (activity as MainActivity).authViewModel
 
-
         food = args.food
         count = args.count
 
-        authViewModel.authResult.observe(viewLifecycleOwner, Observer { user ->
-            if (user != null) {
-                user.first?.uid?.let { authViewModel.getUserDetail(it) }
-            } else {
-            }
-        })
+//        authViewModel.authResult.observe(viewLifecycleOwner, Observer { user ->
+//            if (user != null) {
+//                user.first?.uid?.let { authViewModel.getUserDetail(it) }
+//            }
+//        })
 
         authViewModel.userDetail.observe(viewLifecycleOwner, Observer { user ->
             user?.let {
@@ -50,7 +48,7 @@ class PaymentFragment : Fragment(R.layout.fragment_payment) {
                 if (order != null) {
                     binding.btnPayment.setOnClickListener {
                         orderViewModel.addNewOrder(order)
-                        findNavController().navigate(R.id.action_paymentFragment_to_yourOrdersFragment)
+                        findNavController().navigate(R.id.action_paymentFragment_to_orderSuccessFragment)
                     }
                 } else {
                     Toast.makeText(context, "Cannot create order due to invalid input", Toast.LENGTH_SHORT).show()

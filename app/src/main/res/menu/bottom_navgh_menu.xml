@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/baseline_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/favoritesFragment"
+        android:icon="@drawable/baseline_favorite"
+        android:title="Favorite" />
+    <item
+        android:id="@+id/account"
+        android:icon="@drawable/baseline_account"
+        android:title="Account"/>
+    <item
+        android:id="@+id/yourOrdersFragment"
+        android:icon="@drawable/baseline_cart"
+        android:title="Your Order"/>
+
+</menu>

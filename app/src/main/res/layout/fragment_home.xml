@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@color/white1"
    >
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -20,7 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="70dp">
+            android:layout_marginBottom="20dp">
 
             <TextView
                 android:id="@+id/textlogin"
@@ -44,24 +43,32 @@
                 app:layout_constraintTop_toBottomOf="@+id/textlogin"
                 tools:ignore="MissingConstraints" />
 
-            <ImageView
-                android:layout_width="70dp"
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgUser"
+                android:layout_width="70sp"
                 android:layout_height="70dp"
+                android:layout_gravity="center"
                 android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/layer"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/roundedImageView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
 
-                android:id="@+id/recyclerHome"
+            <androidx.viewpager2.widget.ViewPager2
+                android:paddingEnd="100dp"
+                android:paddingStart="80dp"
+                android:id="@+id/viewPage2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="180dp"
                 android:layout_marginTop="120dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
     <com.google.android.material.tabs.TabLayout
@@ -103,7 +110,7 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="425dp"
         android:layout_below="@+id/tab_layout"
         app:layout_constraintTop_toBottomOf="@+id/tab_layout" />
 

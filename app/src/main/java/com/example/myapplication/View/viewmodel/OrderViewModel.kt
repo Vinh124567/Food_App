@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.model.FoodReponse
+import com.example.myapplication.model.FoodResponse
 import com.example.myapplication.model.Order
 import com.example.myapplication.model.OrderDTO
 import com.example.myapplication.repository.NewsRemoteRepository
@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 class OrderViewModel(app: Application, private val newsRemoteRepository: NewsRemoteRepository) : AndroidViewModel(app) {
 
     val errorLiveData = MutableLiveData<String>()
-    val newOrderResult: MutableLiveData<FoodReponse<Order>> = MutableLiveData()
+    val newOrderResult: MutableLiveData<FoodResponse<Order>> = MutableLiveData()
     val listOrderResult: MutableLiveData<List<OrderDTO>> = MutableLiveData()
 
     fun addNewOrder(order: Order) {

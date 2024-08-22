@@ -18,6 +18,9 @@
         <argument
             android:name="name"
             app:argType="string" />
+        <argument
+            android:name="uri"
+            app:argType="string" />
         <action
             android:id="@+id/action_addressFragment_to_singUpSuccessFragment"
             app:destination="@id/singUpSuccessFragment" />
@@ -103,16 +106,24 @@
             android:id="@+id/action_paymentFragment_to_foodDetailFragment2"
             app:destination="@id/foodDetailFragment2" />
         <action
-            android:id="@+id/action_paymentFragment_to_yourOrdersFragment"
-            app:destination="@id/yourOrdersFragment" />
+            android:id="@+id/action_paymentFragment_to_orderSuccessFragment"
+            app:destination="@id/orderSuccessFragment" />
     </fragment>
     <fragment
         android:id="@+id/yourOrdersFragment"
         android:name="com.example.myapplication.View.Fragment.YourOrdersFragment"
         android:label="fragment_your_orders"
-        tools:layout="@layout/fragment_your_orders" >
+        tools:layout="@layout/fragment_your_orders" />
+    <fragment
+        android:id="@+id/orderSuccessFragment"
+        android:name="com.example.myapplication.View.Fragment.OrderSuccessFragment"
+        android:label="fragment_order_success"
+        tools:layout="@layout/fragment_order_success" >
         <action
-            android:id="@+id/action_yourOrdersFragment_to_paymentFragment"
-            app:destination="@id/paymentFragment" />
+            android:id="@+id/action_orderSuccessFragment_to_yourOrdersFragment2"
+            app:destination="@id/yourOrdersFragment" />
+        <action
+            android:id="@+id/action_orderSuccessFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

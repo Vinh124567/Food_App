@@ -43,6 +43,7 @@ class NewTasteFragment : Fragment(R.layout.fragment_new_taste) {
         binding.recyclerViewPopular.apply {
             adapter = popularAdapter
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            binding.recyclerViewPopular.setPadding(0, 0, 0, 0)
         }
     }
 
