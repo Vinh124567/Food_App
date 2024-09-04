@@ -1,0 +1,10 @@
+Ui Design:
+![image](https://github.com/user-attachments/assets/2a837c0d-471f-45dd-af32-48ad99ea6cd5)
+![image](https://github.com/user-attachments/assets/9ac37e6a-9e33-44be-8dfc-aed9c8c49e40)
+![image](https://github.com/user-attachments/assets/a18a44cf-6952-48f6-89c9-fa4e4ad3b50f)
+![image](https://github.com/user-attachments/assets/58c6f065-c611-44ed-a2ee-7f47d34d8c01)
+![image](https://github.com/user-attachments/assets/6f7ab77e-8dc8-492b-93d2-a72e7787e1b5)
+![image](https://github.com/user-attachments/assets/880ed563-8aaa-44da-89b9-f2eee9fe5085)
+![image](https://github.com/user-attachments/assets/75e16349-9fe5-4734-b94a-7f8c48727a2c)
+![image](https://github.com/user-attachments/assets/46692e88-617a-4979-8546-483ae51eb1db)
+![image](https://github.com/user-attachments/assets/d3cb010f-745c-4d54-8173-a93e2ff17af1)
